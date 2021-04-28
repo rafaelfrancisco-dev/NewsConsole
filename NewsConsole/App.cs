@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using NewsConsole.Views;
 using Terminal.Gui;
@@ -10,7 +11,7 @@ namespace NewsConsole
         private NewsListView _newsListView;
         private OutletListView _outletListView;
 
-        private Parser _parser;
+        private readonly Parser _parser;
         
         public App()
         {
@@ -20,15 +21,33 @@ namespace NewsConsole
             Width = Dim.Fill();
             Height = Dim.Fill();
             
+            // Logic stuff
             _parser = new Parser();
             
             InitStaticViews(_parser);
-            SetupMenu();
+            InitMenus();
 
             _parser.NewsReceived += GotNews;
             _parser.StartParser();
         }
 
+        private void GotNews(object sender, NewsReceivedEventArgs e)
+        {
+            _newsListView.News = e.news;
+            SetChildNeedsDisplay();
+        }
+
+        private void OutletChanged(ListViewItemEventArgs e)
+        {
+            
+        }
+
+        private void NewsItemSelected(ListViewItemEventArgs e)
+        {
+            Application.Run<NewsDetailView>();
+        }
+        
+        // Layout methods
         private void InitStaticViews(Parser parser)
         {
             _outletListView = new OutletListView(parser.Outlets.Select(e => e.Name).ToArray());
@@ -56,15 +75,12 @@ namespace NewsConsole
 
             Add(outletWindow);
             Add(newslistWindow);
-        }
 
-        private void GotNews(object sender, NewsReceivedEventArgs e)
-        {
-            _newsListView.News = e.news;
-            SetChildNeedsDisplay();
+            _outletListView.SelectedItemChanged += OutletChanged;
+            _newsListView.OpenSelectedItem += NewsItemSelected;
         }
-
-        private void SetupMenu()
+        
+        private void InitMenus()
         {
             var menu = new MenuBar(new MenuBarItem[] {
                 new("_Ficheiro", new MenuItem [] {
