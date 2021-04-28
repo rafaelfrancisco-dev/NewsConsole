@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Threading;
 using NStack;
 using Terminal.Gui;
@@ -19,11 +21,27 @@ namespace NewsConsole
             Height = Dim.Fill();
             
             InitialSetup();
-            AddExtraFields();
             
             // Parser logic
             _parser = new Parser();
-            new Thread(_parser.StartParser).Start();
+            _parser.NewsReceived += GotNews;
+            
+            _parser.StartParser();
+        }
+
+        private void GotNews(object sender, NewsReceivedEventArgs e)
+        {
+            var list = new ListView(e.news.Select(e => e.title).ToArray())
+            {
+                X = 1,
+                Y = 2,
+                Height = Dim.Fill(),
+                Width = Dim.Fill(1),
+                AllowsMarking = false,
+                AllowsMultipleSelection = false
+            };
+            
+            Add(list);
         }
 
         private void InitialSetup()
@@ -41,44 +59,7 @@ namespace NewsConsole
                 })
             });
             
-            this.Add(menu);
-        }
-
-        private void AddExtraFields()
-        {
-            var login = new Label("Login: ") { X = 3, Y = 2 };
-            var password = new Label("Password: ")
-            {
-                X = Pos.Left(login),
-                Y = Pos.Top(login) + 1
-            };
-            var loginText = new TextField("")
-            {
-                X = Pos.Right(password),
-                Y = Pos.Top(login),
-                Width = 40
-            };
-            var passText = new TextField("")
-            {
-                Secret = true,
-                X = Pos.Left(loginText),
-                Y = Pos.Top(password),
-                Width = Dim.Width(loginText)
-            };
-
-            // Add some controls, 
-            this.Add(
-                // The ones with my favorite layout system, Computed
-                login, password, loginText, passText,
-
-                // The ones laid out like an australopithecus, with Absolute positions:
-                new CheckBox(3, 6, "Remember me"),
-                new RadioGroup(3, 8, new ustring[] { "_Personal", "_Company" }, 0),
-                new Button(3, 14, "Ok"),
-                new Button(10, 14, "Cancel"),
-                new Label(3, 18, "Press F9 or ESC plus 9 to activate the menubar")
-            );
-
+            Add(menu);
         }
         
         private static bool Quit()

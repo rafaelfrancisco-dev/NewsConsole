@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using Microsoft.Extensions.Logging;
 using NewsParser.Models;
@@ -9,16 +10,13 @@ namespace NewsParser
     public class Parser
     {
         private List<InternalNews> _news;
-        private INewsOutlet[] _outlets;
+        private readonly INewsOutlet[] _outlets;
 
         public Parser()
         {
             HttpClient client = new HttpClient();
             var loggerFactory = LoggerFactory.Create(builder => {
-                    builder.AddFilter("Microsoft", LogLevel.Warning)
-                        .AddFilter("System", LogLevel.Warning)
-                        .AddFilter("NewsParser", LogLevel.Debug)
-                        .AddConsole();
+                    builder.AddConsole();
                 }
             );
 
@@ -31,6 +29,7 @@ namespace NewsParser
             foreach (var newsOutlet in _outlets)
             {
                 _news.AddRange(await newsOutlet.GetNews());
+                OnNewsReceived(new NewsReceivedEventArgs(_news.ToArray()));
             }
         }
 
@@ -39,5 +38,23 @@ namespace NewsParser
             _news.RemoveRange(0, _news.Count);
             StartParser();
         }
+
+        protected virtual void OnNewsReceived(NewsReceivedEventArgs e)
+        {
+            EventHandler<NewsReceivedEventArgs> handler = NewsReceived;
+            handler?.Invoke(this, e);
+        }
+        
+        public event EventHandler<NewsReceivedEventArgs> NewsReceived;
+    }
+    
+    public class NewsReceivedEventArgs : EventArgs
+    {
+        public NewsReceivedEventArgs(InternalNews[] news)
+        {
+            this.news = news;
+        }
+
+        public InternalNews[] news { get; }
     }
 }
