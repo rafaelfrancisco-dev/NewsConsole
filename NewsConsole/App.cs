@@ -9,67 +9,81 @@ namespace NewsConsole
     {
         private NewsListView _newsListView;
         private OutletListView _outletListView;
+
+        private Parser _parser;
         
         public App()
         {
             X = 0;
             Y = 1; // Leave one row for the toplevel menu
 
-            // By using Dim.Fill(), it will automatically resize without manual intervention
             Width = Dim.Fill();
             Height = Dim.Fill();
             
-            var parser = new Parser();
+            _parser = new Parser();
             
-            InitStaticViews(parser);
-            InitialSetup();
+            InitStaticViews(_parser);
+            SetupMenu();
 
-            parser.NewsReceived += GotNews;
-            parser.StartParser();
+            _parser.NewsReceived += GotNews;
+            _parser.StartParser();
         }
 
         private void InitStaticViews(Parser parser)
         {
-            _outletListView = new OutletListView(parser.Outlets.Select(e => e.Name).ToArray())
+            _outletListView = new OutletListView(parser.Outlets.Select(e => e.Name).ToArray());
+            var outletWindow = new Window("Fontes")
             {
                 X = 1,
-                Y = 2,
+                Y = 1,
                 
                 Height = Dim.Fill(),
                 Width = Dim.Percent(20)
             };
-            
-            _newsListView = new NewsListView()
+
+            _newsListView = new NewsListView();
+            var newslistWindow = new Window("Notícias")
             {
                 X = Pos.Percent(20) + 1,
-                Y = 2,
+                Y = 1,
                 
                 Height = Dim.Fill(),
-                Width = Dim.Percent(75)
+                Width = Dim.Percent(80)
             };
+            
+            outletWindow.Add(_outletListView);
+            newslistWindow.Add(_newsListView);
+
+            Add(outletWindow);
+            Add(newslistWindow);
         }
 
         private void GotNews(object sender, NewsReceivedEventArgs e)
         {
             _newsListView.News = e.news;
+            SetChildNeedsDisplay();
         }
 
-        private void InitialSetup()
+        private void SetupMenu()
         {
             var menu = new MenuBar(new MenuBarItem[] {
-                new("_File", new MenuItem [] {
+                new("_Ficheiro", new MenuItem [] {
                     new("_Quit", "", () => { if (Quit ()) this.Running = false; })
                 }),
-                new("_Edit", new MenuItem [] {
+                new("_Editar", new MenuItem [] {
                     new("_Copy", "", null),
                     new("C_ut", "", null),
                     new("_Paste", "", null)
                 })
             });
+
+            var statusBar = new StatusBar(new []
+            {
+                new StatusItem(Key.F5, "Actualizar", _parser.RefreshNews)
+            });
             
             Add(menu);
-            Add(_newsListView);
-            Add(_outletListView);
+            Add(statusBar);
         }
         
         private static bool Quit()

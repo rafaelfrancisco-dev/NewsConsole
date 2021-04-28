@@ -10,6 +10,12 @@ namespace NewsConsole.Views
 
         public NewsListView()
         {
+            X = 0;
+            Y = 0;
+
+            Height = Dim.Fill();
+            Width = Dim.Fill();
+            
             AllowsMarking = false;
             AllowsMultipleSelection = false;
         }
