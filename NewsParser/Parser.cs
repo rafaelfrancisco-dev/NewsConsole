@@ -39,6 +39,8 @@ namespace NewsParser
             StartParser();
         }
 
+        public INewsOutlet[] Outlets => _outlets;
+
         protected virtual void OnNewsReceived(NewsReceivedEventArgs e)
         {
             EventHandler<NewsReceivedEventArgs> handler = NewsReceived;

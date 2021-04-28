@@ -11,6 +11,7 @@ namespace NewsParser.Models.Outlets
     public class PublicoOutlet: INewsOutlet
     {
         public Uri Endpoint => new Uri("https://www.publico.pt/api/list/ultimas");
+        public string Name => "Público";
 
         private HttpClient _client;
         private readonly ILogger<PublicoOutlet> _logger;
