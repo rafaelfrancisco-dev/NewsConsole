@@ -53,7 +53,7 @@ namespace NewsParser.Models.Responses
 
         [JsonPropertyName("carrgeViaAjax")] public bool CarrgeViaAjax { get; set; }
 
-        [JsonPropertyName("estilo")] public Estilo? Estilo { get; set; }
+        [JsonPropertyName("estilo")] public string Estilo { get; set; }
 
         [JsonPropertyName("tipoCaixa")] public TipoCaixa TipoCaixa { get; set; }
 
@@ -88,8 +88,6 @@ namespace NewsParser.Models.Responses
 
         [JsonPropertyName("hasLive")] public bool HasLive { get; set; }
 
-        [JsonPropertyName("pontuacao")] public long? Pontuacao { get; set; }
-
         [JsonPropertyName("numeroComentarios")] public long NumeroComentarios { get; set; }
 
         [JsonPropertyName("lead")] public object Lead { get; set; }
@@ -100,13 +98,11 @@ namespace NewsParser.Models.Responses
 
         [JsonPropertyName("subtitulo")] public string Subtitulo { get; set; }
 
-        [JsonPropertyName("rubricTag")] public Tag RubricTag { get; set; }
-
         [JsonPropertyName("rubrica")] public string Rubrica { get; set; }
 
         [JsonPropertyName("rubricUrl")] public string RubricUrl { get; set; }
 
-        [JsonPropertyName("tipo")] public NewsPublicoTipo? Tipo { get; set; }
+        [JsonPropertyName("tipo")] public string Tipo { get; set; }
 
         [JsonPropertyName("emActualizacao")] public bool EmActualizacao { get; set; }
 
@@ -120,9 +116,6 @@ namespace NewsParser.Models.Responses
 
         [JsonPropertyName("google")] public long Google { get; set; }
 
-        [JsonPropertyName("fonteMultimediaPrincipal")]
-        public FonteMultimediaPrincipal? FonteMultimediaPrincipal { get; set; }
-
         [JsonPropertyName("palavraChave")] public object PalavraChave { get; set; }
 
         [JsonPropertyName("itemId")] public string ItemId { get; set; }
@@ -134,8 +127,6 @@ namespace NewsParser.Models.Responses
         [JsonPropertyName("numComentarios")] public long NumComentarios { get; set; }
 
         [JsonPropertyName("html")] public object Html { get; set; }
-
-        [JsonPropertyName("tipoLayout")] public TipoLayout? TipoLayout { get; set; }
 
         [JsonPropertyName("caixaId")] public long? CaixaId { get; set; }
 
@@ -221,7 +212,7 @@ namespace NewsParser.Models.Responses
 
         [JsonPropertyName("isExclusive")] public bool IsExclusive { get; set; }
 
-        [JsonPropertyName("satelliteName")] public SatelliteName SatelliteName { get; set; }
+        [JsonPropertyName("satelliteName")] public string SatelliteName { get; set; }
 
         [JsonPropertyName("userLibraryStatus")] public object UserLibraryStatus { get; set; }
 
@@ -244,7 +235,7 @@ namespace NewsParser.Models.Responses
 
         [JsonPropertyName("nome")] public object Nome { get; set; }
 
-        [JsonPropertyName("token")] public Token Token { get; set; }
+        [JsonPropertyName("token")] public string Token { get; set; }
 
         [JsonPropertyName("isCaixaNoticia")] public bool IsCaixaNoticia { get; set; }
 
@@ -256,7 +247,7 @@ namespace NewsParser.Models.Responses
 
         [JsonPropertyName("conteudoAleatorio")] public bool ConteudoAleatorio { get; set; }
 
-        [JsonPropertyName("directorio")] public Directorio? Directorio { get; set; }
+        [JsonPropertyName("directorio")] public string Directorio { get; set; }
 
         [JsonPropertyName("dependeDoConteudo")] public bool DependeDoConteudo { get; set; }
 
@@ -289,9 +280,9 @@ namespace NewsParser.Models.Responses
 
         [JsonPropertyName("localizacao")] public string Localizacao { get; set; }
 
-        [JsonPropertyName("profissaoActual")] public Profissao? ProfissaoActual { get; set; }
+        [JsonPropertyName("profissaoActual")] public string ProfissaoActual { get; set; }
 
-        [JsonPropertyName("profissaoNaAltura")] public Profissao? ProfissaoNaAltura { get; set; }
+        [JsonPropertyName("profissaoNaAltura")] public string ProfissaoNaAltura { get; set; }
 
         [JsonPropertyName("slug")] public string Slug { get; set; }
 
@@ -305,7 +296,7 @@ namespace NewsParser.Models.Responses
 
         [JsonPropertyName("contribuicao")] public string Contribuicao { get; set; }
 
-        [JsonPropertyName("tipo")] public AutoreTipo? Tipo { get; set; }
+        [JsonPropertyName("tipo")] public string Tipo { get; set; }
     }
 
     public partial class Image
@@ -324,7 +315,7 @@ namespace NewsParser.Models.Responses
 
         [JsonPropertyName("autor")] public string Autor { get; set; }
 
-        [JsonPropertyName("tipo")] public ImagenTipo Tipo { get; set; }
+        [JsonPropertyName("tipo")] public string Tipo { get; set; }
 
         [JsonPropertyName("url")] public Uri Url { get; set; }
 
@@ -337,7 +328,7 @@ namespace NewsParser.Models.Responses
 
     public partial class CardInfo
     {
-        [JsonPropertyName("css")] public Css[] Css { get; set; }
+        [JsonPropertyName("css")] public string[] Css { get; set; }
 
         [JsonPropertyName("showMedia")] public bool ShowMedia { get; set; }
 
@@ -358,7 +349,7 @@ namespace NewsParser.Models.Responses
 
         [JsonPropertyName("slug")] public string Slug { get; set; }
 
-        [JsonPropertyName("tagEn")] public TagEn TagEn { get; set; }
+        [JsonPropertyName("tagEn")] public string TagEn { get; set; }
 
         [JsonPropertyName("isPrincipal")] public bool IsPrincipal { get; set; }
 
@@ -385,76 +376,4 @@ namespace NewsParser.Models.Responses
 
         [JsonPropertyName("isUsedInForuns")] public bool IsUsedInForuns { get; set; }
     }
-
-    public enum Estilo
-    {
-        StoryCalloutInline
-    };
-
-    public enum Directorio
-    {
-        Empty,
-        Highlights
-    };
-
-    public enum Token
-    {
-        ArtigoTexto,
-        Imagem780_520,
-        NoticiaHtml
-    };
-
-    public enum ImagenTipo
-    {
-        Jpg,
-        Png
-    };
-
-    public enum Profissao
-    {
-        Empty,
-        Jornalista
-    };
-
-    public enum AutoreTipo
-    {
-        Agencia,
-        Externo,
-        Interno
-    };
-
-    public enum Css
-    {
-        CardF,
-        ToneNews
-    };
-
-    public enum FonteMultimediaPrincipal
-    {
-        Imagens
-    };
-
-    public enum TagEn
-    {
-        Economy,
-        Empty
-    };
-
-    public enum SatelliteName
-    {
-        Empty,
-        Ímpar,
-        Ípsilon
-    };
-
-    public enum NewsPublicoTipo
-    {
-        Noticia
-    };
-
-    public enum TipoLayout
-    {
-        LongformNormal,
-        MultimediaNormal
-    };
 }

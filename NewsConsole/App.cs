@@ -1,3 +1,4 @@
+using System.Threading;
 using NStack;
 using Terminal.Gui;
 using NewsParser;
@@ -19,6 +20,10 @@ namespace NewsConsole
             
             InitialSetup();
             AddExtraFields();
+            
+            // Parser logic
+            _parser = new Parser();
+            new Thread(_parser.StartParser).Start();
         }
 
         private void InitialSetup()
