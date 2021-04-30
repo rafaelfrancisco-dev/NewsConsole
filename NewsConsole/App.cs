@@ -44,7 +44,7 @@ namespace NewsConsole
 
         private void NewsItemSelected(ListViewItemEventArgs e)
         {
-            Application.Run<NewsDetailView>();
+            Application.Top.Add(new NewsDetailView());
         }
         
         // Layout methods
@@ -73,8 +73,7 @@ namespace NewsConsole
             outletWindow.Add(_outletListView);
             newslistWindow.Add(_newsListView);
 
-            Add(outletWindow);
-            Add(newslistWindow);
+            Add(outletWindow, newslistWindow);
 
             _outletListView.SelectedItemChanged += OutletChanged;
             _newsListView.OpenSelectedItem += NewsItemSelected;
@@ -98,8 +97,7 @@ namespace NewsConsole
                 new StatusItem(Key.F5, "Actualizar", _parser.RefreshNews)
             });
             
-            Add(menu);
-            Add(statusBar);
+            Add(menu, statusBar);
         }
         
         private static bool Quit()
