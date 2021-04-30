@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NewsParser.Models.Responses;
@@ -13,7 +14,7 @@ namespace NewsParser.Models.Outlets
         public Uri Endpoint => new Uri("https://www.publico.pt/api/list/ultimas");
         public string Name => "Público";
 
-        private HttpClient _client;
+        private readonly HttpClient _client;
         private readonly ILogger<PublicoOutlet> _logger;
 
         public PublicoOutlet(HttpClient client, ILogger<PublicoOutlet> logger)
@@ -43,7 +44,12 @@ namespace NewsParser.Models.Outlets
 
         private InternalNews[] ConvertToInternalNews(NewsPublico[] news)
         {
-            return news.Select(e => new InternalNews(e.Titulo, e.Subtitulo, e.Descricao, e.Url)).ToArray();
+            return news.Select(e => new InternalNews(CleanUpHtmlTags(e.Titulo), e.Subtitulo, e.Descricao, e.Url)).ToArray();
+        }
+
+        private string CleanUpHtmlTags(string input)
+        {
+            return Regex.Replace(input, "<.*?>", String.Empty);
         }
     }
 }
