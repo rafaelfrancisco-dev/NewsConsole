@@ -33,7 +33,7 @@ namespace NewsConsole
 
         private void GotNews(object sender, NewsReceivedEventArgs e)
         {
-            _newsListView.News = e.news;
+            _newsListView.News = e.News;
             SetChildNeedsDisplay();
         }
 

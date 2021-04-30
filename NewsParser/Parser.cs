@@ -54,9 +54,9 @@ namespace NewsParser
     {
         public NewsReceivedEventArgs(InternalNews[] news)
         {
-            this.news = news;
+            this.News = news;
         }
 
-        public InternalNews[] news { get; }
+        public InternalNews[] News { get; }
     }
 }
