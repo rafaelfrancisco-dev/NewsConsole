@@ -28,9 +28,10 @@ namespace NewsConsole
             InitMenus();
 
             _parser.NewsReceived += GotNews;
-            _parser.StartParser();
+            _parser.Parse();
         }
 
+        // Events
         private void GotNews(object sender, NewsReceivedEventArgs e)
         {
             _newsListView.News = e.News;
@@ -39,7 +40,7 @@ namespace NewsConsole
 
         private void OutletChanged(ListViewItemEventArgs e)
         {
-            
+            //var markedElements = _outletListView.Source.ToList().Cast<string>().Select()
         }
 
         private void NewsItemSelected(ListViewItemEventArgs e)

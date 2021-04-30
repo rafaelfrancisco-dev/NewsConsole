@@ -1,34 +1,32 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NewsParser.Models.Responses;
 
 namespace NewsParser.Models.Outlets
 {
-    public class PublicoOutlet: INewsOutlet
+    public class JornalEcoOutlet: INewsOutlet
     {
-        public Uri Endpoint => new("https://www.publico.pt/api/list/ultimas");
-        public string Name => "Público";
+        public Uri Endpoint => new("https://eco.sapo.pt/wp-json/eco/v1/items");
+        public string Name => "Jornal ECO";
 
         private readonly HttpClient _client;
-        private readonly ILogger<PublicoOutlet> _logger;
-
-        public PublicoOutlet(HttpClient client, ILogger<PublicoOutlet> logger)
+        private readonly ILogger<JornalEcoOutlet> _logger;
+        
+        public JornalEcoOutlet(HttpClient client, ILogger<JornalEcoOutlet> logger)
         {
             _client = client;
             _logger = logger;
         }
-
+        
         public async Task<InternalNews[]> GetNews()
         {
             try
             {
                 await using var responseStream = await _client.GetStreamAsync(Endpoint);
-                var news = await JsonSerializer.DeserializeAsync<NewsPublico[]>(responseStream);
+                var news = await JsonSerializer.DeserializeAsync<NewsJornalEco[]>(responseStream);
                 
                 _logger.LogDebug($"Got {news?.Length} from {Endpoint}");
             
@@ -41,15 +39,10 @@ namespace NewsParser.Models.Outlets
                 return null;
             }
         }
-
-        private InternalNews[] ConvertToInternalNews(NewsPublico[] news)
+        
+        private InternalNews[] ConvertToInternalNews(NewsJornalEco[] news)
         {
-            return news.Select(e => new InternalNews(CleanUpHtmlTags(e.Titulo), e.Subtitulo, e.Descricao, e.Url)).ToArray();
-        }
-
-        private string CleanUpHtmlTags(string input)
-        {
-            return Regex.Replace(input, "<.*?>", String.Empty);
+            return news.Select(e => new InternalNews(e.Title.Long, e.Title.Short, e.Body, e.Links.WebUri)).ToArray();
         }
     }
 }

@@ -15,7 +15,7 @@ namespace NewsServer
 
         public void StartServer()
         {
-            _parser.StartParser();
+            _parser.Parse();
         }
     }
 }
