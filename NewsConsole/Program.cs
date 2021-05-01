@@ -1,4 +1,9 @@
 ﻿using NewsConsole.Views.MainView;
 using Terminal.Gui;
 
-Application.Run<App>();
+Application.Init();
+
+var top = Application.Top;
+top.Add(new MainView(top));
+
+Application.Run();

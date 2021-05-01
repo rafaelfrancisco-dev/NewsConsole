@@ -5,21 +5,24 @@ using Terminal.Gui;
 
 namespace NewsConsole.Views.MainView
 {
-    public partial class App: Window
+    public partial class MainView: Window
     {
+        private Toplevel _toplevel;
+        
         private NewsListView _newsListView;
         private OutletListView _outletListView;
 
         private readonly Parser _parser;
         
-        public App()
+        public MainView(Toplevel toplevel)
         {
             X = 0;
             Y = 1; // Leave one row for the toplevel menu
 
             Width = Dim.Fill();
             Height = Dim.Fill();
-            
+
+            _toplevel = toplevel;
             _parser = new Parser();
             
             InitMenus();
@@ -27,8 +30,6 @@ namespace NewsConsole.Views.MainView
 
             _parser.NewsReceived += GotNews;
             _parser.Parse();
-
-            Title = "NewsConsole";
         }
 
         // Layout methods
@@ -38,7 +39,7 @@ namespace NewsConsole.Views.MainView
             var outletWindow = new FrameView("Fontes")
             {
                 X = 1,
-                Y = 1,
+                Y = 0,
                 
                 Height = Dim.Fill(),
                 Width = Dim.Percent(20)
@@ -48,7 +49,7 @@ namespace NewsConsole.Views.MainView
             var newslistWindow = new FrameView("Notícias")
             {
                 X = Pos.Percent(20) + 1,
-                Y = 1,
+                Y = 0,
                 
                 Height = Dim.Fill(),
                 Width = Dim.Percent(80)
@@ -85,7 +86,7 @@ namespace NewsConsole.Views.MainView
                 Items = new [] { new StatusItem(Key.F5, "Actualizar", _parser.RefreshNews) }
             };
             
-            Add(menu, statusBar);
+            _toplevel.Add(menu, statusBar);
         }
         
         private static bool Quit()

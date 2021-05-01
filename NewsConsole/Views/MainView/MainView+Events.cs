@@ -4,12 +4,11 @@ using Terminal.Gui;
 
 namespace NewsConsole.Views.MainView
 {
-    public partial class App
+    public partial class MainView
     {
         private void GotNews(object sender, NewsReceivedEventArgs e)
         {
             _newsListView.News = e.News;
-            SetChildNeedsDisplay();
         }
 
         private void OutletChanged(ListViewItemEventArgs e)
