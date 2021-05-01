@@ -1,11 +1,12 @@
-﻿using NewsParser.Models;
+﻿using NewsConsole.Views.Main;
+using NewsParser.Models;
 using Terminal.Gui;
 
 namespace NewsConsole.Views
 {
     public class NewsDetailView: View
     {
-        private InternalNews _newsElement;
+        private readonly InternalNews _newsElement;
         
         public NewsDetailView(InternalNews newsElement)
         {
@@ -16,21 +17,14 @@ namespace NewsConsole.Views
             Width = Dim.Fill();
 
             _newsElement = newsElement;
+            
             InitLayout();
+            ConfigureStatusBar();
         }
 
         private void InitLayout()
         {
-            var scrollView = new ScrollView()
-            {
-                X = 0,
-                Y = 1,
-                
-                Height = Dim.Fill(),
-                Width = Dim.Fill()
-            };
-            
-            var textView = new TextView()
+            var textView = new TextView
             {
                 X = 0,
                 Y = 0,
@@ -38,11 +32,27 @@ namespace NewsConsole.Views
                 Height = Dim.Fill(),
                 Width = Dim.Fill(),
                 
-                Text = _newsElement.description
+                Text = _newsElement.description,
+                WordWrap = true
             };
-            
-            scrollView.Add(textView);
-            Add(scrollView);
+
+            Add(textView);
+        }
+
+        private void ConfigureStatusBar()
+        {
+            Application.Top.StatusBar.Items = new[]
+            {
+                new StatusItem(Key.Esc, "Esc - Voltar", GoBack),
+                new StatusItem(Key.F1, "F1 - Partilhar", null),
+                new StatusItem(Key.F2, "F2 - Abrir link", null)
+            };
+        }
+
+        private void GoBack()
+        {
+            Application.Top.RemoveAll();
+            Application.Top.Add(new MainView(Application.Top));
         }
     }
 }

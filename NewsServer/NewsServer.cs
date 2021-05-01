@@ -12,7 +12,7 @@ namespace NewsServer
             StartServer();
         }
 
-        public void StartServer()
+        private void StartServer()
         {
             _parser.Parse();
         }

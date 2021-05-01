@@ -18,7 +18,7 @@ namespace NewsParser.Logic
     {
         public NewsReceivedEventArgs(InternalNews[] news)
         {
-            this.News = news;
+            News = news;
         }
 
         public InternalNews[] News { get; }

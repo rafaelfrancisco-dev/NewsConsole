@@ -1,4 +1,4 @@
-﻿using NewsConsole.Views.MainView;
+﻿using NewsConsole.Views.Main;
 using Terminal.Gui;
 
 Application.Init();

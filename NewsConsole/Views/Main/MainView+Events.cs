@@ -2,13 +2,14 @@ using System.Linq;
 using NewsParser.Logic;
 using Terminal.Gui;
 
-namespace NewsConsole.Views.MainView
+namespace NewsConsole.Views.Main
 {
     public partial class MainView
     {
         private void GotNews(object sender, NewsReceivedEventArgs e)
         {
             _newsListView.News = e.News;
+            ViewUtils.SetupScrollBar(_newsListView);
         }
 
         private void OutletChanged(ListViewItemEventArgs e)

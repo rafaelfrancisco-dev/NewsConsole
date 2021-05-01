@@ -3,9 +3,9 @@ using NewsConsole.Views.SmallViews;
 using NewsParser.Logic;
 using Terminal.Gui;
 
-namespace NewsConsole.Views.MainView
+namespace NewsConsole.Views.Main
 {
-    public partial class MainView: Window
+    public partial class MainView: View
     {
         private readonly Toplevel _toplevel;
         
@@ -38,20 +38,20 @@ namespace NewsConsole.Views.MainView
             _outletListView = new OutletListView(parser.Outlets.Select(e => e.Name).ToArray());
             var outletWindow = new FrameView("Fontes")
             {
-                X = 1,
+                X = 0,
                 Y = 0,
                 
-                Height = Dim.Fill(),
+                Height = Dim.Fill() - 1,
                 Width = Dim.Percent(20)
             };
 
             _newsListView = new NewsListView();
             var newslistWindow = new FrameView("Notícias")
             {
-                X = Pos.Percent(20) + 1,
+                X = Pos.Percent(20),
                 Y = 0,
                 
-                Height = Dim.Fill(),
+                Height = Dim.Fill() - 1,
                 Width = Dim.Percent(80)
             };
             
@@ -68,7 +68,7 @@ namespace NewsConsole.Views.MainView
         {
             var menu = new MenuBar(new MenuBarItem[] {
                 new("_Ficheiro", new MenuItem [] {
-                    new("_Quit", "", () => { if (Quit ()) this.Running = false; })
+                    new("_Quit", "", () => { if (Quit ()) Application.Top.Running = false; })
                 }),
                 new("_Editar", new MenuItem [] {
                     new("_Copy", "", null),
