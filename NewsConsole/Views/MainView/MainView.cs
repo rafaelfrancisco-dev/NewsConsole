@@ -7,7 +7,7 @@ namespace NewsConsole.Views.MainView
 {
     public partial class MainView: Window
     {
-        private Toplevel _toplevel;
+        private readonly Toplevel _toplevel;
         
         private NewsListView _newsListView;
         private OutletListView _outletListView;
@@ -83,7 +83,12 @@ namespace NewsConsole.Views.MainView
 
             var statusBar = new StatusBar()
             {
-                Items = new [] { new StatusItem(Key.F5, "Actualizar", _parser.RefreshNews) }
+                Items = new []
+                {
+                    new StatusItem(Key.F3, "F3 - Ligar Servidor", null),
+                    new StatusItem(Key.F5, "F5 - Actualizar", _parser.RefreshNews),
+                    new StatusItem(Key.F12, "F12 - Sair", () => Quit())
+                }
             };
             
             _toplevel.Add(menu, statusBar);

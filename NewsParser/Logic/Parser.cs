@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NewsParser.Models;
 using NewsParser.Logic.Outlets;
+using NewsParser.Models;
 
 namespace NewsParser.Logic
 {
@@ -75,5 +74,7 @@ namespace NewsParser.Logic
         
         // Properties
         public INewsOutlet[] Outlets => _outlets;
+
+        public List<InternalNews> News => _news;
     }
 }

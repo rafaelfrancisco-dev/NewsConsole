@@ -20,7 +20,13 @@ namespace NewsConsole.Views.MainView
 
         private void NewsItemSelected(ListViewItemEventArgs e)
         {
-            Application.Top.Add(new NewsDetailView());
+            var newsItem = _parser.News.First(element => element.title == e.Value.ToString());
+            
+            var newsDetailWindow = new Window(newsItem.title);
+            newsDetailWindow.Add(new NewsDetailView(newsItem));
+            
+            RemoveAll();
+            Add(newsDetailWindow);
         }
     }
 }
