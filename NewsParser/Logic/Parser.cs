@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NewsParser.Models;
-using NewsParser.Models.Outlets;
+using NewsParser.Logic.Outlets;
 
 namespace NewsParser.Logic
 {
@@ -13,6 +15,8 @@ namespace NewsParser.Logic
         
         private readonly INewsOutlet[] _outlets;
         private HashSet<INewsOutlet> _activeOutlets;
+
+        private List<Task> _tasks;
 
         public Parser()
         {
@@ -30,9 +34,14 @@ namespace NewsParser.Logic
 
         public async void Parse()
         {
-            foreach (var newsOutlet in _activeOutlets)
+            _tasks = new List<Task>(_activeOutlets.Select(element => element.GetNews()));
+            await Task.WhenAll(_tasks);
+
+            foreach (var task1 in _tasks)
             {
-                _news.AddRange(await newsOutlet.GetNews());
+                var task = (Task<InternalNews[]>) task1;
+                
+                _news.AddRange(task.Result);
                 OnNewsReceived(new NewsReceivedEventArgs(_news.ToArray()));
             }
         }
@@ -54,6 +63,14 @@ namespace NewsParser.Logic
             OnNewsReceived(new NewsReceivedEventArgs(_news.ToArray()));
             
             RefreshNews();
+        }
+
+        private void CancelAllTasks()
+        {
+            foreach (var task in _tasks)
+            {
+                
+            }
         }
         
         // Properties

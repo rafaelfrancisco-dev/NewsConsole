@@ -4,8 +4,9 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using NewsParser.Models;
 
-namespace NewsParser.Models.Outlets
+namespace NewsParser.Logic.Outlets
 {
     public class JornalEcoOutlet: INewsOutlet
     {

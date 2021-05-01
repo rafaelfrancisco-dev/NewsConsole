@@ -5,9 +5,10 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using NewsParser.Models;
 using NewsParser.Models.Responses;
 
-namespace NewsParser.Models.Outlets
+namespace NewsParser.Logic.Outlets
 {
     public class PublicoOutlet: INewsOutlet
     {
