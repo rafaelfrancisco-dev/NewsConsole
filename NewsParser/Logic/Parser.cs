@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using Microsoft.Extensions.Logging;
 using NewsParser.Models;
 using NewsParser.Models.Outlets;
 
-namespace NewsParser
+namespace NewsParser.Logic
 {
-    public class Parser
+    public partial class Parser
     {
         private readonly List<InternalNews> _news;
         
@@ -50,43 +49,14 @@ namespace NewsParser
             {
                 return;
             }
-            
-            foreach (var newsOutlet in _activeOutlets.Except(outlets))
-            {
-                RemoveNewsFromOutlet(newsOutlet);
-            }
 
             _activeOutlets = new HashSet<INewsOutlet>(outlets);
             OnNewsReceived(new NewsReceivedEventArgs(_news.ToArray()));
             
             RefreshNews();
         }
-
-        private void RemoveNewsFromOutlet(INewsOutlet outlet)
-        {
-            _news.RemoveAll(element => element.publication == outlet.Name);
-        }
         
         // Properties
         public INewsOutlet[] Outlets => _outlets;
-
-        // Events
-        private void OnNewsReceived(NewsReceivedEventArgs e)
-        {
-            EventHandler<NewsReceivedEventArgs> handler = NewsReceived;
-            handler?.Invoke(this, e);
-        }
-        
-        public event EventHandler<NewsReceivedEventArgs> NewsReceived;
-    }
-    
-    public class NewsReceivedEventArgs : EventArgs
-    {
-        public NewsReceivedEventArgs(InternalNews[] news)
-        {
-            this.News = news;
-        }
-
-        public InternalNews[] News { get; }
     }
 }

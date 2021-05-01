@@ -6,11 +6,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Terminal.Gui" Version="1.0.0-rc.12" />
+      <ProjectReference Include="..\NewsParser\NewsParser.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\NewsParser\NewsParser.csproj" />
+      <PackageReference Include="Terminal.Gui" Version="1.0.0" />
     </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using NewsConsole.Views;
 using Terminal.Gui;
-using NewsParser;
+using NewsParser.Logic;
 
 namespace NewsConsole
 {

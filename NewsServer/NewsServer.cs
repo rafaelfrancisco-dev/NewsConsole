@@ -1,5 +1,4 @@
-﻿using System;
-using NewsParser;
+﻿using NewsParser.Logic;
 
 namespace NewsServer
 {
