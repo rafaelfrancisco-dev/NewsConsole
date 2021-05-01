@@ -42,7 +42,7 @@ namespace NewsParser.Models.Outlets
         
         private InternalNews[] ConvertToInternalNews(NewsJornalEco[] news)
         {
-            return news.Select(e => new InternalNews(e.Title.Long, e.Title.Short, e.Body, e.Links.WebUri)).ToArray();
+            return news.Select(e => new InternalNews(Name, e.Title.Long, e.Title.Short, e.Body, e.Links.WebUri)).ToArray();
         }
     }
 }

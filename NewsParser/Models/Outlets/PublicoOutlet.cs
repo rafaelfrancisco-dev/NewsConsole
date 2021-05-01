@@ -44,7 +44,7 @@ namespace NewsParser.Models.Outlets
 
         private InternalNews[] ConvertToInternalNews(NewsPublico[] news)
         {
-            return news.Select(e => new InternalNews(CleanUpHtmlTags(e.Titulo), e.Subtitulo, e.Descricao, e.Url)).ToArray();
+            return news.Select(e => new InternalNews(Name, CleanUpHtmlTags(e.Titulo), e.Subtitulo, e.Descricao, e.Url)).ToArray();
         }
 
         private string CleanUpHtmlTags(string input)

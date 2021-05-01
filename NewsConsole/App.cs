@@ -24,30 +24,13 @@ namespace NewsConsole
             // Logic stuff
             _parser = new Parser();
             
-            InitStaticViews(_parser);
             InitMenus();
+            InitStaticViews(_parser);
 
             _parser.NewsReceived += GotNews;
             _parser.Parse();
         }
 
-        // Events
-        private void GotNews(object sender, NewsReceivedEventArgs e)
-        {
-            _newsListView.News = e.News;
-            SetChildNeedsDisplay();
-        }
-
-        private void OutletChanged(ListViewItemEventArgs e)
-        {
-            //var markedElements = _outletListView.Source.ToList().Cast<string>().Select()
-        }
-
-        private void NewsItemSelected(ListViewItemEventArgs e)
-        {
-            Application.Top.Add(new NewsDetailView());
-        }
-        
         // Layout methods
         private void InitStaticViews(Parser parser)
         {
@@ -93,10 +76,10 @@ namespace NewsConsole
                 })
             });
 
-            var statusBar = new StatusBar(new []
+            var statusBar = new StatusBar()
             {
-                new StatusItem(Key.F5, "Actualizar", _parser.RefreshNews)
-            });
+                Items = new [] { new StatusItem(Key.F5, "Actualizar", _parser.RefreshNews) }
+            };
             
             Add(menu, statusBar);
         }
@@ -105,6 +88,23 @@ namespace NewsConsole
         {
             var n = MessageBox.Query(50, 7, "Quit Demo", "Are you sure you want to quit this demo?", "Yes", "No");
             return n == 0;
+        }
+        
+        // Events
+        private void GotNews(object sender, NewsReceivedEventArgs e)
+        {
+            _newsListView.News = e.News;
+            SetChildNeedsDisplay();
+        }
+
+        private void OutletChanged(ListViewItemEventArgs e)
+        {
+            _parser.SetOutlets(_parser.Outlets.Where(element => _outletListView.GetMarkedElements().Contains(element.Name)).ToArray());
+        }
+
+        private void NewsItemSelected(ListViewItemEventArgs e)
+        {
+            Application.Top.Add(new NewsDetailView());
         }
     }
 }

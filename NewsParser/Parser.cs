@@ -10,7 +10,7 @@ namespace NewsParser
 {
     public class Parser
     {
-        private List<InternalNews> _news;
+        private readonly List<InternalNews> _news;
         
         private readonly INewsOutlet[] _outlets;
         private HashSet<INewsOutlet> _activeOutlets;
@@ -44,18 +44,30 @@ namespace NewsParser
             Parse();
         }
 
-        public void DisableOutlet(INewsOutlet outlet)
+        public void SetOutlets(INewsOutlet[] outlets)
         {
-            _activeOutlets.Remove(outlet);
+            if (outlets == null || _activeOutlets.SequenceEqual(outlets))
+            {
+                return;
+            }
+            
+            foreach (var newsOutlet in _activeOutlets.Except(outlets))
+            {
+                RemoveNewsFromOutlet(newsOutlet);
+            }
+
+            _activeOutlets = new HashSet<INewsOutlet>(outlets);
+            OnNewsReceived(new NewsReceivedEventArgs(_news.ToArray()));
+            
             RefreshNews();
         }
 
-        public void EnabledOutlet(INewsOutlet outlet)
+        private void RemoveNewsFromOutlet(INewsOutlet outlet)
         {
-            _activeOutlets.Add(outlet);
-            RefreshNews();
+            _news.RemoveAll(element => element.publication == outlet.Name);
         }
         
+        // Properties
         public INewsOutlet[] Outlets => _outlets;
 
         // Events
