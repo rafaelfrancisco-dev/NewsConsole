@@ -2,7 +2,7 @@
 using NewsParser.Models;
 using Terminal.Gui;
 
-namespace NewsConsole.Views
+namespace NewsConsole.Views.SmallViews
 {
     public class NewsListView: ListView
     {

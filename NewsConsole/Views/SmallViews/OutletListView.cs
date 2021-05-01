@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Terminal.Gui;
 
-namespace NewsConsole.Views
+namespace NewsConsole.Views.SmallViews
 {
     public class OutletListView : ListView
     {

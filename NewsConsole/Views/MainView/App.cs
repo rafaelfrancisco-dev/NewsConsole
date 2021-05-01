@@ -1,12 +1,11 @@
-using System;
 using System.Linq;
-using NewsConsole.Views;
-using Terminal.Gui;
+using NewsConsole.Views.SmallViews;
 using NewsParser.Logic;
+using Terminal.Gui;
 
-namespace NewsConsole
+namespace NewsConsole.Views.MainView
 {
-    public class App: Window
+    public partial class App: Window
     {
         private NewsListView _newsListView;
         private OutletListView _outletListView;
@@ -21,7 +20,6 @@ namespace NewsConsole
             Width = Dim.Fill();
             Height = Dim.Fill();
             
-            // Logic stuff
             _parser = new Parser();
             
             InitMenus();
@@ -29,13 +27,15 @@ namespace NewsConsole
 
             _parser.NewsReceived += GotNews;
             _parser.Parse();
+
+            Title = "NewsConsole";
         }
 
         // Layout methods
         private void InitStaticViews(Parser parser)
         {
             _outletListView = new OutletListView(parser.Outlets.Select(e => e.Name).ToArray());
-            var outletWindow = new Window("Fontes")
+            var outletWindow = new FrameView("Fontes")
             {
                 X = 1,
                 Y = 1,
@@ -45,7 +45,7 @@ namespace NewsConsole
             };
 
             _newsListView = new NewsListView();
-            var newslistWindow = new Window("Notícias")
+            var newslistWindow = new FrameView("Notícias")
             {
                 X = Pos.Percent(20) + 1,
                 Y = 1,
@@ -73,6 +73,10 @@ namespace NewsConsole
                     new("_Copy", "", null),
                     new("C_ut", "", null),
                     new("_Paste", "", null)
+                }),
+                new("_Ajuda", new MenuItem []
+                {
+                    new("A_cerca", "", null)
                 })
             });
 
@@ -88,23 +92,6 @@ namespace NewsConsole
         {
             var n = MessageBox.Query(50, 7, "Quit Demo", "Are you sure you want to quit this demo?", "Yes", "No");
             return n == 0;
-        }
-        
-        // Events
-        private void GotNews(object sender, NewsReceivedEventArgs e)
-        {
-            _newsListView.News = e.News;
-            SetChildNeedsDisplay();
-        }
-
-        private void OutletChanged(ListViewItemEventArgs e)
-        {
-            _parser.SetOutlets(_parser.Outlets.Where(element => _outletListView.GetMarkedElements().Contains(element.Name)).ToArray());
-        }
-
-        private void NewsItemSelected(ListViewItemEventArgs e)
-        {
-            Application.Top.Add(new NewsDetailView());
         }
     }
 }
