@@ -28,7 +28,12 @@ namespace NewsParser.Logic
 
             _news = new List<InternalNews>();
             
-            _outlets = new INewsOutlet[] { new PublicoOutlet(client, loggerFactory.CreateLogger<PublicoOutlet>()), new JornalEcoOutlet(client, loggerFactory.CreateLogger<JornalEcoOutlet>()) };
+            _outlets = new INewsOutlet[]
+            {
+                new PublicoOutlet(client, loggerFactory.CreateLogger<PublicoOutlet>()), 
+                new JornalEcoOutlet(client, loggerFactory.CreateLogger<JornalEcoOutlet>()),
+                new RtpOutlet(loggerFactory.CreateLogger<RtpOutlet>())
+            };
             _activeOutlets = new HashSet<INewsOutlet>(_outlets);
         }
 
