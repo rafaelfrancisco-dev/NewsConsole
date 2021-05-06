@@ -23,7 +23,11 @@ namespace NewsConsole.Views.Main
         {
             var newsItem = _parser.News.First(element => element.title == e.Value.ToString());
             
-            var newsDetailWindow = new Window(newsItem.title);
+            var newsDetailWindow = new Window(newsItem.title)
+            {
+                Width = Dim.Fill(),
+                Height = Dim.Fill() - 1
+            };
             newsDetailWindow.Add(new NewsDetailView(newsItem));
             
             RemoveAll();

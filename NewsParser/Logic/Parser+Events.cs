@@ -10,8 +10,15 @@ namespace NewsParser.Logic
             EventHandler<NewsReceivedEventArgs> handler = NewsReceived;
             handler?.Invoke(this, e);
         }
+
+        private void OnProgressReceived(NewsProgressEventArgs e)
+        {
+            EventHandler<NewsProgressEventArgs> handler = ProgressReceived;
+            handler?.Invoke(this, e);
+        }
         
         public event EventHandler<NewsReceivedEventArgs> NewsReceived;
+        public event EventHandler<NewsProgressEventArgs> ProgressReceived;
     }
     
     public class NewsReceivedEventArgs : EventArgs
@@ -22,5 +29,15 @@ namespace NewsParser.Logic
         }
 
         public InternalNews[] News { get; }
+    }
+
+    public class NewsProgressEventArgs : EventArgs
+    {
+        public NewsProgressEventArgs(float progress)
+        {
+            Progress = progress;
+        }
+        
+        public float Progress { get; }
     }
 }
