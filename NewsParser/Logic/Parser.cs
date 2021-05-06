@@ -39,7 +39,13 @@ namespace NewsParser.Logic
 
         public async void Parse()
         {
-            _tasks = new List<Task>(_activeOutlets.Select(element => element.GetNews()));
+            _tasks = new List<Task>(_activeOutlets.Select(async (element) =>
+            {
+                var result = await element.GetNews();
+                OnProgressReceived(new NewsProgressEventArgs(100 / (float) _activeOutlets.Count));
+
+                return result;
+            }));
             await Task.WhenAll(_tasks);
 
             foreach (var task1 in _tasks)
