@@ -20,9 +20,3 @@ var top = Application.Top;
 top.Add(new MainView(top));
 
 Application.Run();
-
-if (Debugger.IsAttached)
-{
-    Process.Start(path);
-    Process.Start(pathError);
-}

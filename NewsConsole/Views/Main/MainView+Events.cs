@@ -14,14 +14,14 @@ namespace NewsConsole.Views.Main
 
         private void OutletChanged(ListViewItemEventArgs e)
         {
-            _parser
-                .SetOutlets(_parser.Outlets
+            GlobalObjects.Instance.Parser
+                .SetOutlets(GlobalObjects.Instance.Parser.Outlets
                 .Where(element => _outletListView.GetMarkedElements().Contains(element.Name)).ToArray());
         }
 
         private void NewsItemSelected(ListViewItemEventArgs e)
         {
-            var newsItem = _parser.News.First(element => element.title == e.Value.ToString());
+            var newsItem = GlobalObjects.Instance.Parser.News.First(element => element.title == e.Value.ToString());
             
             var newsDetailWindow = new Window(newsItem.title)
             {
