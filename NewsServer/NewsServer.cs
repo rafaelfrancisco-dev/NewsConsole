@@ -4,17 +4,22 @@ namespace NewsServer
 {
     public class NewsServer
     {
-        private Parser _parser;
+        private readonly Parser _parser;
         
-        public NewsServer()
+        public NewsServer(Parser parser)
         {
-            _parser = new Parser();
+            _parser = parser;
             StartServer();
         }
 
         private void StartServer()
         {
-            _parser.Parse();
+            if (_parser.News.Count == 0)
+            {
+                _parser.Parse();
+            }
+            
+            
         }
     }
 }

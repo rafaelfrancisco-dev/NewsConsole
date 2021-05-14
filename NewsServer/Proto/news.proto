@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package news;
+
+service NewsList {
+  rpc NewsList () returns (NewsListReply);
+}
+
+message NewsListReply {
+  string name = 1;
+}

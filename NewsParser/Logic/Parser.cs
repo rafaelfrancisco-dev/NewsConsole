@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NewsParser.Models;
 using NewsParser.Logic.Outlets;
+using NewsParser.Models;
 
 namespace NewsParser.Logic
 {
-    public partial class Parser
+    public sealed partial class Parser
     {
         private readonly List<InternalNews> _news;
         
@@ -21,13 +20,13 @@ namespace NewsParser.Logic
         public Parser()
         {
             HttpClient client = new HttpClient();
+            _news = new List<InternalNews>();
+            
             var loggerFactory = LoggerFactory.Create(builder => {
                     builder.AddConsole();
                 }
             );
 
-            _news = new List<InternalNews>();
-            
             _outlets = new INewsOutlet[]
             {
                 new PublicoOutlet(client, loggerFactory.CreateLogger<PublicoOutlet>()), 
