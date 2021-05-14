@@ -3,9 +3,19 @@ syntax = "proto3";
 package news;
 
 service NewsList {
-  rpc NewsList () returns (NewsListReply);
+  rpc News (NewsListRequest) returns (NewsListReply);
 }
 
+message NewsListRequest { }
+
 message NewsListReply {
-  string name = 1;
+  repeated NewsListElement elements = 1;
+}
+
+message NewsListElement {
+  string title = 1;
+  string subtitle = 2;
+  string description = 3;
+  string publication = 4;
+  string url = 5;
 }

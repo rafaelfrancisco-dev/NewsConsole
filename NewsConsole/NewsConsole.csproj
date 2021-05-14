@@ -7,6 +7,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\NewsParser\NewsParser.csproj" />
+      <ProjectReference Include="..\NewsServer\NewsServer.csproj" />
     </ItemGroup>
 
     <ItemGroup>

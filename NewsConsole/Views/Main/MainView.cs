@@ -1,6 +1,7 @@
 using System.Linq;
 using NewsConsole.Views.SmallViews;
 using NewsParser.Logic;
+using NewsServer.Server;
 using Terminal.Gui;
 
 namespace NewsConsole.Views.Main
@@ -13,6 +14,7 @@ namespace NewsConsole.Views.Main
         private OutletListView _outletListView;
 
         private readonly Parser _parser;
+        private readonly Server _server;
         
         public MainView(Toplevel toplevel)
         {
@@ -24,6 +26,7 @@ namespace NewsConsole.Views.Main
 
             _toplevel = toplevel;
             _parser = new Parser();
+            _server = new Server(_parser);
             
             InitMenus();
             InitStaticViews(_parser);
