@@ -27,7 +27,7 @@ namespace NewsServer.Server
             StartServer();
         }
 
-        public void StartServer()
+        private void StartServer()
         {
             _parser.NewsReceived += GotNews;
             _server = new Grpc.Core.Server
