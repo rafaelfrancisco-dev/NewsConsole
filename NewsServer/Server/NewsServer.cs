@@ -22,33 +22,37 @@ namespace NewsServer.Server
             );
             
             _parser = parser;
-            _newsListService = new NewsService(loggerFactory.CreateLogger<NewsService>());
+            _parser.NewsReceived += GotNews;
             
+            _newsListService = new NewsService(loggerFactory.CreateLogger<NewsService>());
             StartServer();
         }
 
         private void StartServer()
         {
-            _parser.NewsReceived += GotNews;
-            _server = new Grpc.Core.Server
-            {
-                Services = { NewsList.BindService(_newsListService) },
-                Ports = { new ServerPort("localhost", 5001, ServerCredentials.Insecure) }
-            };
-
             try
             {
+                _server = new Grpc.Core.Server
+                {
+                    Services = { NewsList.BindService(_newsListService) },
+                    Ports = { new ServerPort("localhost", 5001, ServerCredentials.Insecure) }
+                };
+
                 _server.Start();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                throw;
             }
             finally
             {
                 Console.WriteLine("gRPC Server running");
             }
+        }
+
+        public void StopServer()
+        {
+            _server.ShutdownAsync();
         }
         
         private void GotNews(object sender, NewsReceivedEventArgs e)

@@ -1,7 +1,6 @@
 using System.Linq;
 using NewsConsole.Views.SmallViews;
 using NewsParser.Logic;
-using NewsServer.Server;
 using Terminal.Gui;
 
 namespace NewsConsole.Views.Main
@@ -13,9 +12,6 @@ namespace NewsConsole.Views.Main
         private NewsListView _newsListView;
         private OutletListView _outletListView;
 
-        private readonly Parser _parser;
-        private readonly Server _server;
-        
         public MainView(Toplevel toplevel)
         {
             X = 0;
@@ -25,14 +21,18 @@ namespace NewsConsole.Views.Main
             Height = Dim.Fill();
 
             _toplevel = toplevel;
-            _parser = new Parser();
-            _server = new Server(_parser);
-            
-            InitMenus();
-            InitStaticViews(_parser);
 
-            _parser.NewsReceived += GotNews;
-            _parser.Parse();
+            InitMenus();
+            InitStaticViews(GlobalObjects.Instance.Parser);
+
+            if (GlobalObjects.Instance.Parser.News.Count > 0)
+            {
+                _newsListView.News = GlobalObjects.Instance.Parser.News.ToArray();
+                ViewUtils.SetupScrollBar(_newsListView);
+            }
+            
+            GlobalObjects.Instance.Parser.NewsReceived += GotNews;
+            GlobalObjects.Instance.Parser.Parse();
         }
 
         // Layout methods
@@ -89,7 +89,7 @@ namespace NewsConsole.Views.Main
                 Items = new []
                 {
                     new StatusItem(Key.F3, "F3 - Ligar Servidor", null),
-                    new StatusItem(Key.F5, "F5 - Actualizar", _parser.RefreshNews),
+                    new StatusItem(Key.F5, "F5 - Actualizar", GlobalObjects.Instance.Parser.RefreshNews),
                     new StatusItem(Key.F12, "F12 - Sair", () => Quit())
                 }
             };

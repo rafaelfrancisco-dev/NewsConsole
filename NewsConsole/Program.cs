@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using NewsConsole;
 using NewsConsole.Views.Main;
@@ -20,9 +19,3 @@ var top = Application.Top;
 top.Add(new MainView(top));
 
 Application.Run();
-
-if (Debugger.IsAttached)
-{
-    Process.Start(path);
-    Process.Start(pathError);
-}
