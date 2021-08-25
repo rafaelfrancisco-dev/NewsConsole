@@ -1,8 +1,7 @@
 ﻿using System;
 using System.IO;
 using NewsConsole;
-using NewsConsole.Views.Main;
-using Terminal.Gui;
+using Spectre.Console;
 
 var path = Utils.CreateTmpFile();
 var pathError = Utils.CreateTmpFile();
@@ -13,9 +12,9 @@ using var writerError = new StreamWriter(pathError);
 Console.SetOut(writer);
 Console.SetError(writerError);
 
-Application.Init();
+AnsiConsole.Markup("[underline red]Hello[/] World!");
 
-var top = Application.Top;
-top.Add(new MainView(top));
-
-Application.Run();
+if (!AnsiConsole.Confirm("Run example?"))
+{
+    return;
+}
