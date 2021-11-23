@@ -35,7 +35,7 @@ namespace NewsParser.Logic.Outlets
                 _logger.LogError(e, $"Something went wrong when calling {Endpoint}");
             }
 
-            if (feed != null)
+            if (feed == null) return null;
             {
                 var list = new List<InternalNews>();
                 
@@ -49,13 +49,12 @@ namespace NewsParser.Logic.Outlets
                             .Aggregate("", (acc, eS) => acc.Concat($" {eS}").ToString()),
                         element.Summary.Text,
                         element.Links.First().Uri.ToString()
-                        ));
+                    ));
                 }
 
                 return Task.FromResult(list.ToArray());
             }
-            
-            return null;
+
         }
     }
 }

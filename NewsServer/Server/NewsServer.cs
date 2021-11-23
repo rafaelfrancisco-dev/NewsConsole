@@ -28,7 +28,7 @@ namespace NewsServer.Server
             StartServer();
         }
 
-        public void StartServer()
+        private void StartServer()
         {
             try
             {

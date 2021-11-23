@@ -6,20 +6,17 @@ namespace NewsConsole
 {
     public class GlobalObjects
     {
-        private readonly Parser _parser;
-        private readonly Server _server;
-        
         private static readonly Lazy<GlobalObjects> Lazy = new(() => new GlobalObjects());
         public static GlobalObjects Instance => Lazy.Value;
 
         public GlobalObjects()
         {
-            _parser = new Parser();
-            _server = new Server(_parser);
+            Parser = new Parser();
+            Server = new Server(Parser);
         }
 
-        public Parser Parser => _parser;
+        public Parser Parser { get; }
 
-        public Server Server => _server;
+        public Server Server { get; }
     }
 }
