@@ -6,24 +6,35 @@ namespace NewsConsole.Views.Main
 {
     public partial class MainView
     {
+        #region ParserEvents
+
         private void GotNews(object sender, NewsReceivedEventArgs e)
         {
             _newsListView.News = e.News;
             ViewUtils.SetupScrollBar(_newsListView);
         }
 
+        private void GotProgress(object sender, NewsProgressEventArgs e)
+        {
+            
+        }
+
+        #endregion
+
+        #region LocalEvents
+
         private void OutletChanged(ListViewItemEventArgs e)
         {
             GlobalObjects.Instance.Parser
                 .SetOutlets(GlobalObjects.Instance.Parser.Outlets
-                .Where(element => _outletListView.GetMarkedElements().Contains(element.Name)).ToArray());
+                    .Where(element => _outletListView.GetMarkedElements().Contains(element.Name)).ToArray());
         }
 
         private void NewsItemSelected(ListViewItemEventArgs e)
         {
-            var newsItem = GlobalObjects.Instance.Parser.News.First(element => element.title == e.Value.ToString());
+            var newsItem = GlobalObjects.Instance.Parser.News.First(element => element.Title == e.Value.ToString());
             
-            var newsDetailWindow = new Window(newsItem.title)
+            var newsDetailWindow = new Window(newsItem.Title)
             {
                 Width = Dim.Fill(),
                 Height = Dim.Fill() - 1
@@ -33,5 +44,7 @@ namespace NewsConsole.Views.Main
             RemoveAll();
             Add(newsDetailWindow);
         }
+
+        #endregion
     }
 }

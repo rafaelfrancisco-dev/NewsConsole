@@ -7,13 +7,13 @@ namespace NewsParser.Logic
     {
         private void OnNewsReceived(NewsReceivedEventArgs e)
         {
-            EventHandler<NewsReceivedEventArgs> handler = NewsReceived;
+            var handler = NewsReceived;
             handler?.Invoke(this, e);
         }
 
         private void OnProgressReceived(NewsProgressEventArgs e)
         {
-            EventHandler<NewsProgressEventArgs> handler = ProgressReceived;
+            var handler = ProgressReceived;
             handler?.Invoke(this, e);
         }
         

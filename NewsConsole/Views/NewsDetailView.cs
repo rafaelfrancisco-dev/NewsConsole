@@ -35,7 +35,7 @@ namespace NewsConsole.Views
                 Height = Dim.Fill(),
                 Width = Dim.Fill(),
                 
-                Text = _newsElement.description,
+                Text = _newsElement.Description,
                 WordWrap = true
             };
 
@@ -68,7 +68,7 @@ namespace NewsConsole.Views
 
         private void OpenBrowser()
         {
-            var url = _newsElement.url;
+            var url = _newsElement.Url;
             
             try
             {

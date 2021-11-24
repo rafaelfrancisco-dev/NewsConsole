@@ -29,15 +29,15 @@ namespace NewsServer.Services
             {
                 var internalCopy = element;
                 
-                internalCopy.subtitle ??= string.Empty;
+                internalCopy.Subtitle ??= string.Empty;
                 
                 var newElement = new NewsListElement
                 {
-                    Title = internalCopy.title,
-                    Subtitle = internalCopy.subtitle,
-                    Description = internalCopy.description,
-                    Publication = internalCopy.publication,
-                    Url = internalCopy.url
+                    Title = internalCopy.Title,
+                    Subtitle = internalCopy.Subtitle,
+                    Description = internalCopy.Description,
+                    Publication = internalCopy.Publication,
+                    Url = internalCopy.Url
                 };
 
                 reply.Elements.Add(newElement);

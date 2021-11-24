@@ -26,7 +26,7 @@ namespace NewsConsole.Views.SmallViews
             {
                 _news = value;
                 
-                SetSource(_news.Select(e => e.title).ToArray());
+                SetSource(_news.Select(e => e.Title).ToArray());
                 SetNeedsDisplay();
             }
         }

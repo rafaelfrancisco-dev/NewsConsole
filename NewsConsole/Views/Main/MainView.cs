@@ -32,6 +32,8 @@ namespace NewsConsole.Views.Main
             }
             
             GlobalObjects.Instance.Parser.NewsReceived += GotNews;
+            GlobalObjects.Instance.Parser.ProgressReceived += GotProgress;
+            
             GlobalObjects.Instance.Parser.Parse();
         }
 
