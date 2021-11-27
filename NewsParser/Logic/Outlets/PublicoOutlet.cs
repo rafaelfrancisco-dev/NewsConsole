@@ -6,11 +6,11 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NewsParser.Models;
-using NewsParser.Models.Responses;
+using NewsParser.Models.Responses.Publico;
 
 namespace NewsParser.Logic.Outlets
 {
-    public class PublicoOutlet: INewsOutlet
+    public class PublicoOutlet : INewsOutlet
     {
         public Uri Endpoint => new("https://www.publico.pt/api/list/ultimas");
         public string Name => "Público";
@@ -30,9 +30,9 @@ namespace NewsParser.Logic.Outlets
             {
                 await using var responseStream = await _client.GetStreamAsync(Endpoint);
                 var news = await JsonSerializer.DeserializeAsync<NewsPublico[]>(responseStream);
-                
+
                 _logger.LogDebug($"Got {news?.Length} from {Endpoint}");
-            
+
                 return ConvertToInternalNews(news);
             }
             catch (Exception e)
@@ -45,7 +45,8 @@ namespace NewsParser.Logic.Outlets
 
         private InternalNews[] ConvertToInternalNews(NewsPublico[] news)
         {
-            return news.Select(e => new InternalNews(Name, CleanUpHtmlTags(e.Titulo), e.Subtitulo, e.Descricao, e.Url)).ToArray();
+            return news.Select(e => new InternalNews(Name, CleanUpHtmlTags(e.Titulo), e.Subtitulo, e.Descricao, e.Url))
+                .ToArray();
         }
 
         private string CleanUpHtmlTags(string input)

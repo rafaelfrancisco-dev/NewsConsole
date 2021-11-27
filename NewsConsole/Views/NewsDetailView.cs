@@ -7,20 +7,20 @@ using Terminal.Gui;
 
 namespace NewsConsole.Views
 {
-    public class NewsDetailView: View
+    public class NewsDetailView : View
     {
         private readonly InternalNews _newsElement;
-        
+
         public NewsDetailView(InternalNews newsElement)
         {
             X = 0;
             Y = 0;
-            
+
             Height = Dim.Fill();
             Width = Dim.Fill();
 
             _newsElement = newsElement;
-            
+
             ConfigureStatusBar();
             InitLayout();
         }
@@ -31,11 +31,11 @@ namespace NewsConsole.Views
             {
                 X = 0,
                 Y = 0,
-                
+
                 Height = Dim.Fill(),
                 Width = Dim.Fill(),
-                
-                Text = _newsElement.description,
+
+                Text = _newsElement.Description,
                 WordWrap = true
             };
 
@@ -43,7 +43,7 @@ namespace NewsConsole.Views
             {
                 X = Pos.Center(),
                 Y = Pos.Bottom(textView) - 10,
-                
+
                 Height = 10,
                 Width = Dim.Percent(25)
             };
@@ -68,8 +68,8 @@ namespace NewsConsole.Views
 
         private void OpenBrowser()
         {
-            var url = _newsElement.url;
-            
+            var url = _newsElement.Url;
+
             try
             {
                 Process.Start(url);

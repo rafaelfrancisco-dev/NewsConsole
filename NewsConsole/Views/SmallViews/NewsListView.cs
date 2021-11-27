@@ -4,7 +4,7 @@ using Terminal.Gui;
 
 namespace NewsConsole.Views.SmallViews
 {
-    public class NewsListView: ListView
+    public class NewsListView : ListView
     {
         private InternalNews[] _news;
 
@@ -15,7 +15,7 @@ namespace NewsConsole.Views.SmallViews
 
             Height = Dim.Fill();
             Width = Dim.Fill();
-            
+
             AllowsMarking = false;
             AllowsMultipleSelection = false;
         }
@@ -25,8 +25,8 @@ namespace NewsConsole.Views.SmallViews
             set
             {
                 _news = value;
-                
-                SetSource(_news.Select(e => e.title).ToArray());
+
+                SetSource(_news.Select(e => e.Title).ToArray());
                 SetNeedsDisplay();
             }
         }

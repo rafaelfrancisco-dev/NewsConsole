@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
+namespace NewsParser.Models.Responses.Eco;
+
 public class Links
 {
     [JsonPropertyName("shortUrl")] public string ShortUrl { get; set; }
@@ -132,7 +134,7 @@ public class Metadata
 
 public class Title
 {
-    [JsonPropertyName("short")] public string Short { get; set; }
+    [JsonPropertyName("short")] public string? Short { get; set; }
 
     [JsonPropertyName("long")] public string Long { get; set; }
 }
@@ -208,7 +210,7 @@ public class NewsJornalEco
 
     [JsonPropertyName("lead")] public string Lead { get; set; }
 
-    [JsonPropertyName("body")] public string Body { get; set; }
+    [JsonPropertyName("body")] public string? Body { get; set; }
 
     [JsonPropertyName("attachments")] public List<Attachment> Attachments { get; set; }
 

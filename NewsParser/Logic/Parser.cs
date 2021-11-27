@@ -11,7 +11,7 @@ namespace NewsParser.Logic
     public sealed partial class Parser
     {
         private readonly List<InternalNews> _news;
-        
+
         private readonly INewsOutlet[] _outlets;
         private HashSet<INewsOutlet> _activeOutlets;
 
@@ -19,19 +19,18 @@ namespace NewsParser.Logic
 
         public Parser()
         {
-            HttpClient client = new HttpClient();
+            var client = new HttpClient();
             _news = new List<InternalNews>();
-            
-            var loggerFactory = LoggerFactory.Create(builder => {
-                    builder.AddConsole();
-                }
+
+            var loggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); }
             );
 
             _outlets = new INewsOutlet[]
             {
-                new PublicoOutlet(client, loggerFactory.CreateLogger<PublicoOutlet>()), 
+                new PublicoOutlet(client, loggerFactory.CreateLogger<PublicoOutlet>()),
                 new JornalEcoOutlet(client, loggerFactory.CreateLogger<JornalEcoOutlet>()),
-                new RtpOutlet(loggerFactory.CreateLogger<RtpOutlet>())
+                new RtpOutlet(loggerFactory.CreateLogger<RtpOutlet>()),
+                new ObservadorOutlet(client, loggerFactory.CreateLogger<ObservadorOutlet>())
             };
             _activeOutlets = new HashSet<INewsOutlet>(_outlets);
         }
@@ -41,7 +40,7 @@ namespace NewsParser.Logic
             _tasks = new List<Task>(_activeOutlets.Select(async (element) =>
             {
                 var result = await element.GetNews();
-                OnProgressReceived(new NewsProgressEventArgs(100 / (float) _activeOutlets.Count));
+                OnProgressReceived(new NewsProgressEventArgs(100 / (float)_activeOutlets.Count));
 
                 return result;
             }));
@@ -49,8 +48,8 @@ namespace NewsParser.Logic
 
             foreach (var task1 in _tasks)
             {
-                var task = (Task<InternalNews[]>) task1;
-                
+                var task = (Task<InternalNews[]>)task1;
+
                 _news.AddRange(task.Result);
                 OnNewsReceived(new NewsReceivedEventArgs(_news.ToArray()));
             }
@@ -71,7 +70,7 @@ namespace NewsParser.Logic
 
             _activeOutlets = new HashSet<INewsOutlet>(outlets);
             OnNewsReceived(new NewsReceivedEventArgs(_news.ToArray()));
-            
+
             RefreshNews();
         }
 
@@ -79,10 +78,9 @@ namespace NewsParser.Logic
         {
             foreach (var task in _tasks)
             {
-                
             }
         }
-        
+
         // Properties
         public INewsOutlet[] Outlets => _outlets;
 

@@ -16,20 +16,20 @@ namespace NewsConsole.Views.Main
         {
             GlobalObjects.Instance.Parser
                 .SetOutlets(GlobalObjects.Instance.Parser.Outlets
-                .Where(element => _outletListView.GetMarkedElements().Contains(element.Name)).ToArray());
+                    .Where(element => _outletListView.GetMarkedElements().Contains(element.Name)).ToArray());
         }
 
         private void NewsItemSelected(ListViewItemEventArgs e)
         {
-            var newsItem = GlobalObjects.Instance.Parser.News.First(element => element.title == e.Value.ToString());
-            
-            var newsDetailWindow = new Window(newsItem.title)
+            var newsItem = GlobalObjects.Instance.Parser.News.First(element => element.Title == e.Value.ToString());
+
+            var newsDetailWindow = new Window(newsItem.Title)
             {
                 Width = Dim.Fill(),
                 Height = Dim.Fill() - 1
             };
             newsDetailWindow.Add(new NewsDetailView(newsItem));
-            
+
             RemoveAll();
             Add(newsDetailWindow);
         }
