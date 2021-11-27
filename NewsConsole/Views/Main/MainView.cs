@@ -5,10 +5,10 @@ using Terminal.Gui;
 
 namespace NewsConsole.Views.Main
 {
-    public partial class MainView: View
+    public partial class MainView : View
     {
         private readonly Toplevel _toplevel;
-        
+
         private NewsListView _newsListView;
         private OutletListView _outletListView;
 
@@ -30,7 +30,7 @@ namespace NewsConsole.Views.Main
                 _newsListView.News = GlobalObjects.Instance.Parser.News.ToArray();
                 ViewUtils.SetupScrollBar(_newsListView);
             }
-            
+
             GlobalObjects.Instance.Parser.NewsReceived += GotNews;
             GlobalObjects.Instance.Parser.Parse();
         }
@@ -43,7 +43,7 @@ namespace NewsConsole.Views.Main
             {
                 X = 0,
                 Y = 0,
-                
+
                 Height = Dim.Fill() - 1,
                 Width = Dim.Percent(20)
             };
@@ -53,11 +53,11 @@ namespace NewsConsole.Views.Main
             {
                 X = Pos.Percent(20),
                 Y = 0,
-                
+
                 Height = Dim.Fill() - 1,
                 Width = Dim.Percent(80)
             };
-            
+
             outletWindow.Add(_outletListView);
             newslistWindow.Add(_newsListView);
 
@@ -66,37 +66,41 @@ namespace NewsConsole.Views.Main
             _outletListView.SelectedItemChanged += OutletChanged;
             _newsListView.OpenSelectedItem += NewsItemSelected;
         }
-        
+
         private void InitMenus()
         {
-            var menu = new MenuBar(new MenuBarItem[] {
-                new("_Ficheiro", new MenuItem [] {
-                    new("_Quit", "", () => { if (Quit ()) Application.Top.Running = false; })
-                }),
-                new("_Editar", new MenuItem [] {
-                    new("_Copy", "", null),
-                    new("C_ut", "", null),
-                    new("_Paste", "", null)
-                }),
-                new("_Ajuda", new MenuItem []
+            var menu = new MenuBar(new MenuBarItem[]
+            {
+                new("_Ficheiro", new MenuItem[]
                 {
-                    new("A_cerca", "", null)
+                    new("_Quit", "", () =>
+                    {
+                        if (Quit()) Application.Top.Running = false;
+                    })
+                }),
+                new("_Ajuda", new MenuItem[]
+                {
+                    new("A_cerca", "", About)
                 })
             });
 
             var statusBar = new StatusBar()
             {
-                Items = new []
+                Items = new[]
                 {
-                    new StatusItem(Key.F3, "F3 - Ligar Servidor", null),
                     new StatusItem(Key.F5, "F5 - Actualizar", GlobalObjects.Instance.Parser.RefreshNews),
                     new StatusItem(Key.F12, "F12 - Sair", () => Quit())
                 }
             };
-            
+
             _toplevel.Add(menu, statusBar);
         }
-        
+
+        private static void About()
+        {
+            MessageBox.Query(50, 7, "Acerca", "This is an about message", "Confirm");
+        }
+
         private static bool Quit()
         {
             var n = MessageBox.Query(50, 7, "Quit Demo", "Are you sure you want to quit this demo?", "Yes", "No");
