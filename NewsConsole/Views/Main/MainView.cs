@@ -1,110 +1,106 @@
+using System;
 using System.Linq;
 using NewsConsole.Views.SmallViews;
 using NewsParser.Logic;
 using Terminal.Gui;
 
-namespace NewsConsole.Views.Main
+namespace NewsConsole.Views.Main;
+
+public partial class MainView : View
 {
-    public partial class MainView : View
+    private readonly Toplevel _toplevel;
+
+    private NewsListView? _newsListView;
+    private OutletListView? _outletListView;
+
+    public MainView(Toplevel toplevel)
     {
-        private readonly Toplevel _toplevel;
+        X = 0;
+        Y = 1; // Leave one row for the toplevel menu
 
-        private NewsListView _newsListView;
-        private OutletListView _outletListView;
+        Width = Dim.Fill();
+        Height = Dim.Fill();
 
-        public MainView(Toplevel toplevel)
+        _toplevel = toplevel;
+
+        InitMenus();
+        InitStaticViews(GlobalObjects.Instance.Parser);
+
+        LogicInit();
+        GetNews();
+    }
+
+    // Layout methods
+    private void InitStaticViews(Parser parser)
+    {
+        _outletListView = new OutletListView(parser.Outlets.Select(e => e.Name).ToArray());
+        var outletWindow = new FrameView("Fontes")
         {
-            X = 0;
-            Y = 1; // Leave one row for the toplevel menu
+            X = 0,
+            Y = 0,
 
-            Width = Dim.Fill();
-            Height = Dim.Fill();
+            Height = Dim.Fill() - 1,
+            Width = Dim.Percent(20)
+        };
 
-            _toplevel = toplevel;
-
-            InitMenus();
-            InitStaticViews(GlobalObjects.Instance.Parser);
-
-            if (GlobalObjects.Instance.Parser.News.Count > 0 && _newsListView != null)
-            {
-                _newsListView.News = GlobalObjects.Instance.Parser.News.ToArray();
-                ViewUtils.SetupScrollBar(_newsListView);
-            }
-
-            GlobalObjects.Instance.Parser.NewsReceived += GotNews;
-            GlobalObjects.Instance.Parser.Parse();
-        }
-
-        // Layout methods
-        private void InitStaticViews(Parser parser)
+        _newsListView = new NewsListView();
+        var newslistWindow = new FrameView("Notícias")
         {
-            _outletListView = new OutletListView(parser.Outlets.Select(e => e.Name).ToArray());
-            var outletWindow = new FrameView("Fontes")
-            {
-                X = 0,
-                Y = 0,
+            X = Pos.Percent(20),
+            Y = 0,
 
-                Height = Dim.Fill() - 1,
-                Width = Dim.Percent(20)
-            };
+            Height = Dim.Fill() - 1,
+            Width = Dim.Percent(80)
+        };
 
-            _newsListView = new NewsListView();
-            var newslistWindow = new FrameView("Notícias")
-            {
-                X = Pos.Percent(20),
-                Y = 0,
+        outletWindow.Add(_outletListView);
+        newslistWindow.Add(_newsListView);
 
-                Height = Dim.Fill() - 1,
-                Width = Dim.Percent(80)
-            };
+        Add(outletWindow, newslistWindow);
 
-            outletWindow.Add(_outletListView);
-            newslistWindow.Add(_newsListView);
+        _outletListView.SelectedItemChanged += OutletChanged;
+        _newsListView.OpenSelectedItem += NewsItemSelected;
 
-            Add(outletWindow, newslistWindow);
+        ViewUtils.SetupScrollBar(_newsListView ?? throw new InvalidOperationException());
+    }
 
-            _outletListView.SelectedItemChanged += OutletChanged;
-            _newsListView.OpenSelectedItem += NewsItemSelected;
-        }
-
-        private void InitMenus()
+    private void InitMenus()
+    {
+        var menu = new MenuBar(new MenuBarItem[]
         {
-            var menu = new MenuBar(new MenuBarItem[]
+            new("_Ficheiro", new MenuItem[]
             {
-                new("_Ficheiro", new MenuItem[]
+                new("_Quit", "", () =>
                 {
-                    new("_Quit", "", () =>
-                    {
-                        if (Quit()) Application.Top.Running = false;
-                    })
-                }),
-                new("_Ajuda", new MenuItem[]
-                {
-                    new("A_cerca", "", About)
+                    if (Quit()) Application.Top.Running = false;
                 })
-            });
-
-            var statusBar = new StatusBar()
+            }),
+            new("_Ajuda", new MenuItem[]
             {
-                Items = new[]
-                {
-                    new StatusItem(Key.F5, "F5 - Actualizar", GlobalObjects.Instance.Parser.RefreshNews),
-                    new StatusItem(Key.F12, "F12 - Sair", () => Quit())
-                }
-            };
+                new("A_cerca", "", About)
+            })
+        });
 
-            _toplevel.Add(menu, statusBar);
-        }
-
-        private static void About()
+        var statusBar = new StatusBar
         {
-            MessageBox.Query(50, 7, "Acerca", "This is an about message", "Confirm");
-        }
+            Items = new[]
+            {
+                new StatusItem(Key.F5, "F5 - Actualizar", GlobalObjects.Instance.Parser.RefreshNews),
+                new StatusItem(Key.F12, "F12 - Sair", () => Quit())
+            }
+        };
 
-        private static bool Quit()
-        {
-            var n = MessageBox.Query(50, 7, "Quit Demo", "Are you sure you want to quit this demo?", "Yes", "No");
-            return n == 0;
-        }
+        _toplevel.Add(menu, statusBar);
+    }
+
+    private static void About()
+    {
+        MessageBox.Query(50, 7, "Acerca", "This is an about message", "Confirm");
+    }
+
+    private static bool Quit()
+    {
+        var n = MessageBox.Query(50, 7, "Quit Demo", "Are you sure you want to quit this demo?", "Yes", "No");
+        return n == 0;
     }
 }

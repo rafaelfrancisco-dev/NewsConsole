@@ -12,7 +12,7 @@ namespace NewsParser.Logic
     {
         private HashSet<INewsOutlet> _activeOutlets;
 
-        private List<Task> _tasks;
+        private List<Task> _tasks = new();
 
         public Parser()
         {
@@ -58,7 +58,7 @@ namespace NewsParser.Logic
             Parse();
         }
 
-        public void SetOutlets(INewsOutlet[] outlets)
+        public void SetOutlets(INewsOutlet[]? outlets)
         {
             if (outlets == null || _activeOutlets.SequenceEqual(outlets))
             {
@@ -69,13 +69,6 @@ namespace NewsParser.Logic
             OnNewsReceived(new NewsReceivedEventArgs(News.ToArray()));
 
             RefreshNews();
-        }
-
-        private void CancelAllTasks()
-        {
-            foreach (var task in _tasks)
-            {
-            }
         }
 
         // Properties

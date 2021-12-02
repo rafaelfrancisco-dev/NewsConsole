@@ -20,7 +20,7 @@ namespace NewsConsole.Views.SmallViews
             AllowsMarking = false;
             AllowsMultipleSelection = false;
 
-            _news = Array.Empty<InternalNews>();
+            News = Array.Empty<InternalNews>();
         }
 
         public InternalNews[] News
