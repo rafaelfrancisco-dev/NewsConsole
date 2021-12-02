@@ -10,9 +10,6 @@ namespace NewsParser.Logic
 {
     public sealed partial class Parser
     {
-        private readonly List<InternalNews> _news;
-
-        private readonly INewsOutlet[] _outlets;
         private HashSet<INewsOutlet> _activeOutlets;
 
         private List<Task> _tasks;
@@ -20,19 +17,19 @@ namespace NewsParser.Logic
         public Parser()
         {
             var client = new HttpClient();
-            _news = new List<InternalNews>();
+            News = new List<InternalNews>();
 
             var loggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); }
             );
 
-            _outlets = new INewsOutlet[]
+            Outlets = new INewsOutlet[]
             {
                 new PublicoOutlet(client, loggerFactory.CreateLogger<PublicoOutlet>()),
                 new JornalEcoOutlet(client, loggerFactory.CreateLogger<JornalEcoOutlet>()),
                 new RtpOutlet(loggerFactory.CreateLogger<RtpOutlet>()),
                 new ObservadorOutlet(client, loggerFactory.CreateLogger<ObservadorOutlet>())
             };
-            _activeOutlets = new HashSet<INewsOutlet>(_outlets);
+            _activeOutlets = new HashSet<INewsOutlet>(Outlets);
         }
 
         public async void Parse()
@@ -50,14 +47,14 @@ namespace NewsParser.Logic
             {
                 var task = (Task<InternalNews[]>)task1;
 
-                _news.AddRange(task.Result);
-                OnNewsReceived(new NewsReceivedEventArgs(_news.ToArray()));
+                News.AddRange(task.Result);
+                OnNewsReceived(new NewsReceivedEventArgs(News.ToArray()));
             }
         }
 
         public void RefreshNews()
         {
-            _news.RemoveRange(0, _news.Count);
+            News.RemoveRange(0, News.Count);
             Parse();
         }
 
@@ -69,7 +66,7 @@ namespace NewsParser.Logic
             }
 
             _activeOutlets = new HashSet<INewsOutlet>(outlets);
-            OnNewsReceived(new NewsReceivedEventArgs(_news.ToArray()));
+            OnNewsReceived(new NewsReceivedEventArgs(News.ToArray()));
 
             RefreshNews();
         }
@@ -82,8 +79,8 @@ namespace NewsParser.Logic
         }
 
         // Properties
-        public INewsOutlet[] Outlets => _outlets;
+        public INewsOutlet[] Outlets { get; }
 
-        public List<InternalNews> News => _news;
+        public List<InternalNews> News { get; }
     }
 }

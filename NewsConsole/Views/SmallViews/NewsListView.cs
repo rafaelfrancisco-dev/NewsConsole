@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NewsParser.Models;
 using Terminal.Gui;
 
@@ -18,6 +19,8 @@ namespace NewsConsole.Views.SmallViews
 
             AllowsMarking = false;
             AllowsMultipleSelection = false;
+
+            _news = Array.Empty<InternalNews>();
         }
 
         public InternalNews[] News

@@ -25,7 +25,7 @@ namespace NewsConsole.Views.Main
             InitMenus();
             InitStaticViews(GlobalObjects.Instance.Parser);
 
-            if (GlobalObjects.Instance.Parser.News.Count > 0)
+            if (GlobalObjects.Instance.Parser.News.Count > 0 && _newsListView != null)
             {
                 _newsListView.News = GlobalObjects.Instance.Parser.News.ToArray();
                 ViewUtils.SetupScrollBar(_newsListView);

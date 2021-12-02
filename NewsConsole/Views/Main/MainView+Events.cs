@@ -6,7 +6,7 @@ namespace NewsConsole.Views.Main
 {
     public partial class MainView
     {
-        private void GotNews(object sender, NewsReceivedEventArgs e)
+        private void GotNews(object? sender, NewsReceivedEventArgs e)
         {
             _newsListView.News = e.News;
             ViewUtils.SetupScrollBar(_newsListView);
